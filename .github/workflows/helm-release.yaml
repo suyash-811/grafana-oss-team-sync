@@ -43,5 +43,5 @@ jobs:
           cd deploy/helm
           CHART_NAME="$(yq -r '.name' Chart.yaml)"
           CHART_VERSION="$(yq -r '.version' Chart.yaml)"
-          helm registry login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
-          helm push ./${CHART_NAME}-${CHART_VERSION}.tgz oci://ghcr.io/${{ github.repository_owner }}
+          helm registry login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GH_PAT }}
+          helm push ./${CHART_NAME}-${CHART_VERSION}.tgz oci://ghcr.io/${{ github.repository_owner }}/charts
