@@ -1,0 +1,44 @@
+# SPDX-FileCopyrightText: 2025 Sebastian Küthe and (other) contributors to project grafana-oss-team-sync <https://github.com/skuethe/grafana-oss-team-sync>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+---
+name: Chart CI Test
+on:
+  push:
+    tag:
+      - '*'
+
+permissions:
+  packages: write
+
+jobs:
+  release:
+    # depending on default permission settings for your org (contents being read-only or read-write for workloads), you will have to add permissions
+    # see: https://docs.github.com/en/actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # -------- New Helm packaging job --------
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.14.0
+
+      - name: Helm package
+        run: |
+          cd deploy/helm
+          helm package . --app-version ${GITHUB_REF_NAME#v}
+
+      - name: Push Helm chart (OCI)
+        run: |
+          cd deploy/helm
+          CHART_NAME="$(yq -r '.version' Chart.name)"
+          CHART_VERSION="$(yq -r '.version' Chart.yaml)"
+          helm registry login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+          helm push ./${CHART_NAME}-${CHART_VERSION}.tgz oci://ghcr.io/${{ github.repository_owner }}/charts
