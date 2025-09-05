@@ -5,7 +5,7 @@
 name: Chart CI Test
 on:
   push:
-    tag:
+    tags:
       - '*'
 
 permissions:
@@ -38,7 +38,7 @@ jobs:
       - name: Push Helm chart (OCI)
         run: |
           cd deploy/helm
-          CHART_NAME="$(yq -r '.version' Chart.name)"
+          CHART_NAME="$(yq -r '.name' Chart.yaml)"
           CHART_VERSION="$(yq -r '.version' Chart.yaml)"
           helm registry login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
           helm push ./${CHART_NAME}-${CHART_VERSION}.tgz oci://ghcr.io/${{ github.repository_owner }}/charts
