@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+---
 # Default values for grafana-oss-team-sync
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
@@ -31,7 +32,7 @@ cronSettings:
   failedJobsHistoryLimit: 1
   startingDeadlineSeconds: null
   suspend: false
-  backoffLimit: 0 # Sets the backoffLimit in the job template. Default behaviour is to NOT retry the job by creating new pods.
+  backoffLimit: 0  # Sets the backoffLimit in the job template. Default behaviour is to NOT retry the job by creating new pods.
 
 # Configuration file(config.yaml) for grafana-oss-team-sync (YAML format)
 # Example configuration:
@@ -94,7 +95,7 @@ podSecurityContext: {}
 securityContext:
   capabilities:
     drop:
-    - ALL
+      - ALL
   readOnlyRootFilesystem: true
   runAsNonRoot: true
   runAsUser: 1000
