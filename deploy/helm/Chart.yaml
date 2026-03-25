@@ -7,8 +7,8 @@ apiVersion: v2
 name: grafana-oss-team-sync
 description: A Helm chart for deploying grafana-oss-team-sync as a CronJob
 type: application
-version: 0.1.0
-appVersion: "0.1.10"
+version: 0.0.0
+appVersion: 0.0.0
 home: "https://github.com/skuethe/grafana-oss-team-sync"
 sources:
   - "https://github.com/skuethe/grafana-oss-team-sync"
