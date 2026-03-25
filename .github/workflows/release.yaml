@@ -74,15 +74,14 @@ jobs:
           helm package --app-version "${RELEASE_VERSION}" --version "${RELEASE_VERSION}" --destination dist/
       
       - name: Fetch chart name
-        working-directory: ./deploy/helm
         id: lookupChartName
         uses: mikefarah/yq@master
         with:
-          cmd: yq -r '.name' Chart.yaml
+          cmd: yq -r '.name' './deploy/helm/Chart.yaml'
 
       - name: Publish chart
         working-directory: ./deploy/helm/dist
         run: |
           CHART_NAME=${{ steps.lookupChartName.outputs.result }}
           RELEASE_VERSION="${GITHUB_REF_NAME#v}"
-          helm push "${CHART_NAME}-${RELEASE_VERSION}.tgz"
+          helm push "${CHART_NAME}-${RELEASE_VERSION}.tgz" "oci://ghcr.io/${{ github.repository_owner }}/charts"
