@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 ---
-chart-dirs:
-  - deploy/
-check-version-increment: true
+charts:
+  - deploy/helm
+check-version-increment: false
 validate-chart-schema: false
 target-branch: main
